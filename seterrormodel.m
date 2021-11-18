@@ -19,12 +19,16 @@
 %    seterrormodel(15,4);   % set 15 V total beam with 4 second integrations
 %
 % See also dsstartup
-function seterrormodel(intensity,deltat,R,T,radiogenicisos)
+function seterrormodel(intensity,deltat,R,T,radiogenicisos,type)
 global ISODATA
 
 % Fundamental constants
 elementarycharge=1.60217646e-19;  % Coulombs
 k=1.3806504e-23;                  % Boltzman's constant (m^2 kg s^-2 K^-1)
+
+if (nargin<6)
+        type = 'fixed-mixture'; % by default, fix the intensity of beams for the mixture
+end
 
 if (nargin<5)
 	radiogenicisos={'Pb','Sr','Hf','Os','Nd'};  % by default, use a different error model for these, as requires two runs.
@@ -53,18 +57,21 @@ for i=1:length(els)
 	nisos=ISODATA.(element).nisos;
 
 	% by default assume Johnson noise and counting statistics
+        errormodel.measured.type='fixed-mixture';
 	errormodel.measured.intensity=intensity;
 	errormodel.measured.a=a.*ones(1,nisos);
 	errormodel.measured.b=b.*ones(1,nisos);
 	errormodel.measured.c=0.*ones(1,nisos);
 
 	% by default, assume no noise on the spike
+        errormodel.spike.type='fixed-mixture';
 	errormodel.spike.intensity=intensity;
 	errormodel.spike.a=0.*ones(1,nisos);
 	errormodel.spike.b=0.*ones(1,nisos);
 	errormodel.spike.c=0.*ones(1,nisos);
 
 	% by default, assume no noise on standard unless it is radiogenic
+        errormodel.standard.type='fixed-mixture';
 	errormodel.standard.intensity=intensity;
 	if isempty(intersect(radiogenicisos,{element}))
 		errormodel.standard.a=0.*ones(1,nisos);

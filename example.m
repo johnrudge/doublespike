@@ -154,3 +154,24 @@ seterrormodel(20,8); % set a 20 V total beam with 8 second integrations
 error2=errorestimate('Fe',0.5,spike,[],[],-0.2,1.8)
 error2/error1
 seterrormodel(); % return error model to defaults
+
+%% Error model 3
+% The default error model of the double spike toolbox fixes the intensity of the beams for the overall
+% mixture at a given level. When sample-limited it may be more appropriate to consider an errormodel
+% when the voltage from the sample is fixed.
+% This can be achieved by changing the error model type from 'fixed-mixture' to 'fixed-sample'
+% The code below recreates Figure 8 of Klaver and Coath 2018, Geostandards and Geoanalytical Research.
+isoinv = [58 60 61 62]
+spike6062 = [0.0132 0.3295 0.0014 0.6547 0.0012]
+spike6162 = [0.0109 0.0081 0.4496 0.5297 0.0017]
+
+seterrormodel()
+ISODATA.Ni.errormodel.measured.intensity = 0.5; % V
+ISODATA.Ni.errormodel.measured.type = 'fixed-sample';
+errorcurve('Ni', spike6062, isoinv);
+hold on
+errorcurve('Ni', spike6162, isoinv);
+ylim([0 0.06]);
+legend('^{60}Ni-^{62}Ni spike', '^{61}Ni-^{62}Ni spike')
+seterrormodel(); % return error model to defaults
+
