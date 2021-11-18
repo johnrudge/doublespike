@@ -27,7 +27,7 @@ elementarycharge=1.60217646e-19;  % Coulombs
 k=1.3806504e-23;                  % Boltzman's constant (m^2 kg s^-2 K^-1)
 
 if (nargin<6)
-        type = 'fixed-mixture'; % by default, fix the intensity of beams for the mixture
+        type = 'fixed-total'; % by default, fix the total intensity of beams for the mixture
 end
 
 if (nargin<5)
@@ -57,21 +57,21 @@ for i=1:length(els)
 	nisos=ISODATA.(element).nisos;
 
 	% by default assume Johnson noise and counting statistics
-        errormodel.measured.type='fixed-mixture';
+        errormodel.measured.type='fixed-total';
 	errormodel.measured.intensity=intensity;
 	errormodel.measured.a=a.*ones(1,nisos);
 	errormodel.measured.b=b.*ones(1,nisos);
 	errormodel.measured.c=0.*ones(1,nisos);
 
 	% by default, assume no noise on the spike
-        errormodel.spike.type='fixed-mixture';
+        errormodel.spike.type='fixed-total';
 	errormodel.spike.intensity=intensity;
 	errormodel.spike.a=0.*ones(1,nisos);
 	errormodel.spike.b=0.*ones(1,nisos);
 	errormodel.spike.c=0.*ones(1,nisos);
 
 	% by default, assume no noise on standard unless it is radiogenic
-        errormodel.standard.type='fixed-mixture';
+        errormodel.standard.type='fixed-total';
 	errormodel.standard.intensity=intensity;
 	if isempty(intersect(radiogenicisos,{element}))
 		errormodel.standard.a=0.*ones(1,nisos);

@@ -72,6 +72,10 @@ for i=1:n
 	measured(i,:)=measured(i,:)/sum(measured(i,:));
 
 	measuredi(i,:)=measured(i,:).*emodel.measured.intensity; % scale up to V
+	if isequal(emodel.measured.type, 'fixed-sample')
+            measuredi(i,:) = measuredi(i,:)/(1.0 - prop(i)); % if fixed-sample, scale up intensity of beam accordingly
+        end
+	
 	measuredivar(i,:)=emodel.measured.a + emodel.measured.b.*measuredi(i,:) + emodel.measured.c.*(measuredi(i,:).^2);
 	measuredicov(:,:,i)=diag(measuredivar(i,:));
 
