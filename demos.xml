@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<demos>
+
+<name>Double Spike</name>
+<type>toolbox</type>
+<icon>$toolbox/matlab/icons/matlabicon.gif</icon>
+<description>The double spike toolbox.
+</description>
+
+<website>
+<a href="http://www.johnrudge.com/doublespike">
+For more information, visit www.johnrudge.com/doublespike</a></website>
+
+<demosection>
+   <label>Demos</label>
+   <demoitem>
+      <label>Double Spike Example</label>
+      <file>html/example.html</file>
+   </demoitem>
+</demosection>
+
+
+</demos>
