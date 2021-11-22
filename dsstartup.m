@@ -25,6 +25,6 @@ global ISODATA
 
 ISODATA=loadrawdata();
 seterrormodel(varargin{:});
-disp('Welcome to the double spike toolbox.    John F. Rudge 2009.')
+disp('Welcome to the double spike toolbox.    John F. Rudge 2009-2021.')
 disp('Default parameters are stored in the global variable ISODATA.')
 disp('Type "global ISODATA" to access and set these parameters.')
