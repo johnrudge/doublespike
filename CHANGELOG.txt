@@ -1,0 +1,14 @@
+Change Log
+==========
+
+1.02 (2021-11-22)
+-----------------
+- Add Klaver and Coath 2018 Figure 8 example with fixed voltage on sample.
+
+1.01 (2011-06-16)
+-----------------
+- Fix a few typos in the maininput.csv file.
+
+1.00 (2009-04-21)
+-----------------
+- Initial public version of the software.

@@ -159,11 +159,11 @@ seterrormodel(); % return error model to defaults
 % The default error model of the double spike toolbox fixes the total voltage of the beams for the overall
 % mixture at a given level. When sample-limited it may be more appropriate to consider an error model
 % where the voltage for the sample is fixed (see John 2012, J. Anal. At. Spectrom.).
-% In the toolbox this can be achieved by changing the error model type from 'fixed-total' to 'fixed-sample'
+% In the toolbox this can be achieved by changing the error model type from 'fixed-total' to 'fixed-sample'.
 % The code below recreates Figure 8 of Klaver and Coath 2018, Geostandards and Geoanalytical Research.
-isoinv = [58 60 61 62]
-spike6062 = [0.0132 0.3295 0.0014 0.6547 0.0012]
-spike6162 = [0.0109 0.0081 0.4496 0.5297 0.0017]
+isoinv = [58 60 61 62];
+spike6062 = [0.0132 0.3295 0.0014 0.6547 0.0012];
+spike6162 = [0.0109 0.0081 0.4496 0.5297 0.0017];
 
 seterrormodel()
 % fix the sample intensity at 0.5 V for all runs

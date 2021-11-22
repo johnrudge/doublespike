@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>A brief demonstration of the double spike toolbox</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-18"><meta name="DC.source" content="example.m"><style type="text/css">
+      --><title>A brief demonstration of the double spike toolbox</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-22"><meta name="DC.source" content="example.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -85,8 +85,8 @@ ans =
           isoname: {'Fe54'  'Fe56'  'Fe57'  'Fe58'}
          isolabel: {'^{54}Fe'  '^{56}Fe'  '^{57}Fe'  '^{58}Fe'}
           element: 'Fe'
-         isoindex: [1x58 double]
-      revisoindex: [1x58 double]
+         isoindex: [1 2 3 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ... ]
+      revisoindex: [54 56 57 58 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ... ]
             nisos: 4
           nratios: 3
           nspikes: 4
@@ -396,16 +396,16 @@ measured(1:10,:)
 </pre><pre class="codeoutput">
 ans =
 
-    0.2658    4.4861    2.6303    2.6179
-    0.2658    4.4859    2.6304    2.6180
-    0.2657    4.4859    2.6303    2.6180
-    0.2657    4.4861    2.6303    2.6179
+    0.2658    4.4861    2.6302    2.6180
+    0.2658    4.4858    2.6303    2.6180
+    0.2658    4.4862    2.6302    2.6182
+    0.2658    4.4860    2.6304    2.6179
     0.2657    4.4861    2.6304    2.6180
-    0.2657    4.4861    2.6303    2.6180
+    0.2658    4.4859    2.6304    2.6181
+    0.2658    4.4861    2.6304    2.6179
+    0.2658    4.4859    2.6304    2.6179
+    0.2657    4.4859    2.6301    2.6180
     0.2658    4.4859    2.6304    2.6178
-    0.2657    4.4861    2.6303    2.6180
-    0.2657    4.4860    2.6303    2.6180
-    0.2657    4.4860    2.6305    2.6180
 
 </pre><h2 id="16">Double spike inversions</h2><p><i>dsinversion</i> performs the double spike inversion. Here we run the double spike inversion on the Monte-Carlo generated data with the chosen spike. We then produce a figure showing how the value of alpha varies over the run.</p><pre class="codeinput">out=dsinversion(<span class="string">'Fe'</span>,measured,spike);
 figure(8);
@@ -416,7 +416,7 @@ predictederror=errorestimate(<span class="string">'Fe'</span>,0.5,spike,[],[],-0
 </pre><pre class="codeoutput">
 monteerror =
 
-    0.0035
+    0.0036
 
 
 predictederror =
@@ -465,9 +465,9 @@ ans =
 
     0.6757
 
-</pre><h2 id="20">Error model 3</h2><p>The default error model of the double spike toolbox fixes the total voltage of the beams for the overall mixture at a given level. When sample-limited it may be more appropriate to consider an error model where the voltage for the sample is fixed (see John 2012, J. Anal. At. Spectrom.). In the toolbox this can be achieved by changing the error model type from 'fixed-total' to 'fixed-sample' The code below recreates Figure 8 of Klaver and Coath 2018, Geostandards and Geoanalytical Research.</p><pre class="codeinput">isoinv = [58 60 61 62]
-spike6062 = [0.0132 0.3295 0.0014 0.6547 0.0012]
-spike6162 = [0.0109 0.0081 0.4496 0.5297 0.0017]
+</pre><h2 id="20">Error model 3</h2><p>The default error model of the double spike toolbox fixes the total voltage of the beams for the overall mixture at a given level. When sample-limited it may be more appropriate to consider an error model where the voltage for the sample is fixed (see John 2012, J. Anal. At. Spectrom.). In the toolbox this can be achieved by changing the error model type from 'fixed-total' to 'fixed-sample'. The code below recreates Figure 8 of Klaver and Coath 2018, Geostandards and Geoanalytical Research.</p><pre class="codeinput">isoinv = [58 60 61 62];
+spike6062 = [0.0132 0.3295 0.0014 0.6547 0.0012];
+spike6162 = [0.0109 0.0081 0.4496 0.5297 0.0017];
 
 seterrormodel()
 <span class="comment">% fix the sample intensity at 0.5 V for all runs</span>
@@ -480,22 +480,7 @@ errorcurve(<span class="string">'Ni'</span>, spike6162, isoinv);
 ylim([0 0.06]);
 legend(<span class="string">'^{60}Ni-^{62}Ni spike'</span>, <span class="string">'^{61}Ni-^{62}Ni spike'</span>)
 seterrormodel(); <span class="comment">% return error model to defaults</span>
-</pre><pre class="codeoutput">
-isoinv =
-
-    58    60    61    62
-
-
-spike6062 =
-
-    0.0132    0.3295    0.0014    0.6547    0.0012
-
-
-spike6162 =
-
-    0.0109    0.0081    0.4496    0.5297    0.0017
-
-</pre><img vspace="5" hspace="5" src="example_09.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="example_09.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% A brief demonstration of the double spike toolbox
 % This is a quick guide to the main features of the double spike toolbox.
@@ -658,11 +643,11 @@ seterrormodel(); % return error model to defaults
 % The default error model of the double spike toolbox fixes the total voltage of the beams for the overall
 % mixture at a given level. When sample-limited it may be more appropriate to consider an error model
 % where the voltage for the sample is fixed (see John 2012, J. Anal. At. Spectrom.).
-% In the toolbox this can be achieved by changing the error model type from 'fixed-total' to 'fixed-sample'
+% In the toolbox this can be achieved by changing the error model type from 'fixed-total' to 'fixed-sample'.
 % The code below recreates Figure 8 of Klaver and Coath 2018, Geostandards and Geoanalytical Research.
-isoinv = [58 60 61 62]
-spike6062 = [0.0132 0.3295 0.0014 0.6547 0.0012]
-spike6162 = [0.0109 0.0081 0.4496 0.5297 0.0017]
+isoinv = [58 60 61 62];
+spike6062 = [0.0132 0.3295 0.0014 0.6547 0.0012];
+spike6162 = [0.0109 0.0081 0.4496 0.5297 0.0017];
 
 seterrormodel()
 % fix the sample intensity at 0.5 V for all runs
