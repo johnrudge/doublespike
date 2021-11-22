@@ -1,5 +1,5 @@
 The double spike toolbox
-Copyright (c) John F. Rudge 2009
+Copyright (c) John F. Rudge 2009-2021
 
 Requirements: MATLAB 7.1 (R14SP3) or higher with the Statistics and Optimization Toolboxes. It may work with older versions too, but has not been tested.
 
