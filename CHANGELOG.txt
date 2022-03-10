@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+1.03 (2022-03-10)
+-----------------
+- Allow setting of mixed resistors in error model based on Chris Coath's suggestion.
+
 1.02 (2021-11-22)
 -----------------
 - Add Klaver and Coath 2018 Figure 8 example with fixed voltage on sample.

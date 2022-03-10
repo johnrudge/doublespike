@@ -24,7 +24,7 @@ Quick start instructions:
 
 "maininput.csv" contains the isotope numbers, atomic weights, standard compositions, and ORNL spike compositions for all the elements. These can be modified as desired (e.g. with more precise standard compositions or different commercial spike compositions). 
 
-Copyright (c) John F. Rudge 2009-2021
+Copyright (c) John F. Rudge 2009-2022
 
 
 
