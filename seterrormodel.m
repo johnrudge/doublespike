@@ -27,7 +27,7 @@
 %    seterrormodel('Fe',15,4);   % set 15 V total beam with 4 second integrations
 %
 % See also dsstartup
-function seterrormodel(element,intensity,deltat,R,T,radiogenicisos,type)
+function seterrormodel(element,intensity,deltat,R,T,radiogenicisos,type,R_reference)
 global ISODATA
 
 % Fundamental constants
