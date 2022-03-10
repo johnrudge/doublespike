@@ -69,8 +69,20 @@ isospike=rawdata.isoindex(isospike);
 qvals=linspace(0.001,0.999,1000);
 errvals=zeros(size(qvals));
 ppmperamuvals=zeros(size(qvals));
+
+nisos = ISODATA.(element).nisos;
+if type == "pure"
+    spikevector1 = zeros(1, nisos);
+    spikevector1(isospike(1)) = 1;
+    spikevector2 = zeros(1, nisos);
+    spikevector2(isospike(2)) = 1;
+else
+    spikevector1 = rawspike(isospike(1),:);
+    spikevector2 = rawspike(isospike(2),:);
+end
+
 for i=1:length(qvals)
-	spike=(qvals(i).*rawspike(isospike(1),:))+((1-qvals(i)).*rawspike(isospike(2),:));
+	spike=(qvals(i).*spikevector1)+((1-qvals(i)).*spikevector2);
 	[errvals(i) ppmperamuvals(i)]=errorestimate(element,prop,spike,isoinv,errorratio,alpha,beta);
 end
 
