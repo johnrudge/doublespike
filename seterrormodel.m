@@ -66,6 +66,7 @@ if isscalar(R)
     R=R*ones(1,nisos);
 end
 
+% equation (36), adjusted for multiple resistors as suggested by Chris Coath
 a=4*k*T*R_reference^2./(deltat*R); % Johnson-Nyquist noise
 b=elementarycharge*R_reference/(deltat).*ones(1,nisos); % Counting statistics
 c=zeros(1,nisos);
