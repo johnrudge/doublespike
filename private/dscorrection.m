@@ -13,6 +13,19 @@ b=(m-n)';
 A=[(T-n)' (-n.*P)' (m.*P)'];
 y0=A\b;
 
+% match up linear exponents with exponential ones
+lambda_lin = y0(1);
+alpha_lin = y0(2)/(1-lambda_lin);
+beta_lin = y0(3);
+
+% linear approximations are awful if |alpha|>|1/P|, cap if getting alpha this large
+alpha_max = 1.0 / max(abs(P));
+alpha_min = -1.0 / max(abs(P));
+
+if alpha_lin > alpha_max || alpha_lin < alpha_min || beta_lin > alpha_max || beta_lin < alpha_min
+    y0 = [0.5 0.0 0.0];
+end
+
 % by starting at the linear solution, solve the non-linear problem
 [y,fval,exitflag,output]=fsolve(@(y)F(y,P,n,T,m),y0,options);
 z=y;
