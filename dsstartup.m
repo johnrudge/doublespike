@@ -24,7 +24,11 @@ function dsstartup(varargin)
 global ISODATA
 
 ISODATA=loadrawdata();
-seterrormodel(varargin{:});
-disp('Welcome to the double spike toolbox.    John F. Rudge 2009-2021.')
+
+els=fieldnames(ISODATA);
+for i=1:length(els)
+	seterrormodel(els{i},varargin{:});
+end
+disp('Welcome to the double spike toolbox.    John F. Rudge 2009-2022.')
 disp('Default parameters are stored in the global variable ISODATA.')
 disp('Type "global ISODATA" to access and set these parameters.')

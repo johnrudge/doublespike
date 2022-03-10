@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>A brief demonstration of the double spike toolbox</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-22"><meta name="DC.source" content="example.m"><style type="text/css">
+      --><title>A brief demonstration of the double spike toolbox</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-03-10"><meta name="DC.source" content="example.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -70,7 +70,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
   </style></head><body><div class="content"><h1>A brief demonstration of the double spike toolbox</h1><!--introduction--><p>This is a quick guide to the main features of the double spike toolbox.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Startup</a></li><li><a href="#2">Default values</a></li><li><a href="#3">2D Error surfaces 1</a></li><li><a href="#4">2D Error surfaces 2</a></li><li><a href="#5">2D Error surfaces 3</a></li><li><a href="#6">Error curves 1</a></li><li><a href="#7">Error curves 2</a></li><li><a href="#8">Optimal spikes 1</a></li><li><a href="#9">Optimal spikes 2</a></li><li><a href="#10">Optimal spikes 3</a></li><li><a href="#11">Optimal spikes 4</a></li><li><a href="#12">Optimal spikes 5</a></li><li><a href="#13">Optimal error curves 1</a></li><li><a href="#14">Optimal error curves 2</a></li><li><a href="#15">Monte Carlo fake mass spec runs</a></li><li><a href="#16">Double spike inversions</a></li><li><a href="#17">Error estimates</a></li><li><a href="#18">Error model 1</a></li><li><a href="#19">Error model 2</a></li><li><a href="#20">Error model 3</a></li></ul></div><h2 id="1">Startup</h2><p>The function <i>dsstartup</i> is used to initialise a number of parameters to default values. These are stored in a global variable called ISODATA. This is a structure with fieldnames corresponding to the different elements. Information includes the isotope numbers, the atomic masses, the standard compositions, and the default error model coefficients. Some of these values are loaded in from the file 'maininput.csv' which can modified by the user as necessary. <i>dsstartup</i> is called automatically the first time one of the double spike toolbox functions is used. The information stored about Fe is shown below.</p><pre class="codeinput">dsstartup;
 <span class="keyword">global</span> ISODATA;
 ISODATA.Fe
-</pre><pre class="codeoutput">Welcome to the double spike toolbox.    John F. Rudge 2009-2021.
+</pre><pre class="codeoutput">Welcome to the double spike toolbox.    John F. Rudge 2009-2022.
 Default parameters are stored in the global variable ISODATA.
 Type "global ISODATA" to access and set these parameters.
 
@@ -85,8 +85,8 @@ ans =
           isoname: {'Fe54'  'Fe56'  'Fe57'  'Fe58'}
          isolabel: {'^{54}Fe'  '^{56}Fe'  '^{57}Fe'  '^{58}Fe'}
           element: 'Fe'
-         isoindex: [1 2 3 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ... ]
-      revisoindex: [54 56 57 58 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ... ]
+         isoindex: [1x58 double]
+      revisoindex: [1x58 double]
             nisos: 4
           nratios: 3
           nspikes: 4
@@ -446,10 +446,10 @@ ans =
             c: [0 0 0 0]
 
 </pre><h2 id="19">Error model 2</h2><p>The function <i>seterrormodel</i> can be used to simply change the intensity and integration time for the default error model. In the example below, a doubling of the intensity decreases the error by roughly a factor of 1/sqrt(2).</p><pre class="codeinput">error1=errorestimate(<span class="string">'Fe'</span>,0.5,spike,[],[],-0.2,1.8)
-seterrormodel(20,8); <span class="comment">% set a 20 V total beam with 8 second integrations</span>
+seterrormodel(<span class="string">'Fe'</span>,20,8); <span class="comment">% set a 20 V total beam with 8 second integrations</span>
 error2=errorestimate(<span class="string">'Fe'</span>,0.5,spike,[],[],-0.2,1.8)
 error2/error1
-seterrormodel(); <span class="comment">% return error model to defaults</span>
+seterrormodel(<span class="string">'Fe'</span>); <span class="comment">% return error model to defaults</span>
 </pre><pre class="codeoutput">
 error1 =
 
@@ -469,7 +469,7 @@ ans =
 spike6062 = [0.0132 0.3295 0.0014 0.6547 0.0012];
 spike6162 = [0.0109 0.0081 0.4496 0.5297 0.0017];
 
-seterrormodel()
+seterrormodel(<span class="string">'Ni'</span>)
 <span class="comment">% fix the sample intensity at 0.5 V for all runs</span>
 ISODATA.Ni.errormodel.measured.intensity = 0.5;
 ISODATA.Ni.errormodel.measured.type = <span class="string">'fixed-sample'</span>;
@@ -479,8 +479,8 @@ hold <span class="string">on</span>
 errorcurve(<span class="string">'Ni'</span>, spike6162, isoinv);
 ylim([0 0.06]);
 legend(<span class="string">'^{60}Ni-^{62}Ni spike'</span>, <span class="string">'^{61}Ni-^{62}Ni spike'</span>)
-seterrormodel(); <span class="comment">% return error model to defaults</span>
-</pre><img vspace="5" hspace="5" src="example_09.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+seterrormodel(<span class="string">'Ni'</span>); <span class="comment">% return error model to defaults</span>
+</pre><img vspace="5" hspace="5" src="example_09.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% A brief demonstration of the double spike toolbox
 % This is a quick guide to the main features of the double spike toolbox.
@@ -634,10 +634,10 @@ ISODATA.Fe.errormodel.measured
 % for the default error model. In the example below, a doubling of the intensity decreases the error
 % by roughly a factor of 1/sqrt(2).
 error1=errorestimate('Fe',0.5,spike,[],[],-0.2,1.8)
-seterrormodel(20,8); % set a 20 V total beam with 8 second integrations
+seterrormodel('Fe',20,8); % set a 20 V total beam with 8 second integrations
 error2=errorestimate('Fe',0.5,spike,[],[],-0.2,1.8)
 error2/error1
-seterrormodel(); % return error model to defaults
+seterrormodel('Fe'); % return error model to defaults
 
 %% Error model 3
 % The default error model of the double spike toolbox fixes the total voltage of the beams for the overall
@@ -649,7 +649,7 @@ isoinv = [58 60 61 62];
 spike6062 = [0.0132 0.3295 0.0014 0.6547 0.0012];
 spike6162 = [0.0109 0.0081 0.4496 0.5297 0.0017];
 
-seterrormodel()
+seterrormodel('Ni')
 % fix the sample intensity at 0.5 V for all runs
 ISODATA.Ni.errormodel.measured.intensity = 0.5;
 ISODATA.Ni.errormodel.measured.type = 'fixed-sample';
@@ -659,7 +659,7 @@ hold on
 errorcurve('Ni', spike6162, isoinv);
 ylim([0 0.06]);
 legend('^{60}Ni-^{62}Ni spike', '^{61}Ni-^{62}Ni spike')
-seterrormodel(); % return error model to defaults
+seterrormodel('Ni'); % return error model to defaults
 
 
 ##### SOURCE END #####

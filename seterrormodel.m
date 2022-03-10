@@ -1,5 +1,6 @@
 %SETERRORMODEL   Sets the coefficients of the error model in the global variable ISODATA
-%    SETERRORMODEL(intensity,deltat,R,T,radiogenicisos)
+%    SETERRORMODEL(element,intensity,deltat,R,T,radiogenicisos)
+%             element -- element used in double spike, e.g. 'Fe'
 %             intensity -- mean total beam intensity (volts). Default is 10 V.
 %             deltat -- integration time (seconds). Default is 8 s.
 %             R -- resistance (ohms). Default is 10^11 ohms.
@@ -19,69 +20,65 @@
 %    seterrormodel(15,4);   % set 15 V total beam with 4 second integrations
 %
 % See also dsstartup
-function seterrormodel(intensity,deltat,R,T,radiogenicisos,type)
+function seterrormodel(element,intensity,deltat,R,T,radiogenicisos,type)
 global ISODATA
 
 % Fundamental constants
 elementarycharge=1.60217646e-19;  % Coulombs
 k=1.3806504e-23;                  % Boltzman's constant (m^2 kg s^-2 K^-1)
 
-if (nargin<6)
+if (nargin<7)
         type = 'fixed-total'; % by default, fix the total intensity of beams for the mixture
 end
 
-if (nargin<5)
+if (nargin<6)
 	radiogenicisos={'Pb','Sr','Hf','Os','Nd'};  % by default, use a different error model for these, as requires two runs.
 end
 
 % Mass spec properties
-if (nargin<4) || isempty(T)
+if (nargin<5) || isempty(T)
 	T=300;            % Temperature (Kelvin)
 end
-if (nargin<3) || isempty(R)
+if (nargin<4) || isempty(R)
 	R=1e11;           % resistance (ohms)
 end
-if (nargin<2) || isempty(deltat)
+if (nargin<3) || isempty(deltat)
 	deltat=8;         % integration time (seconds)
 end
-if (nargin<1) || isempty(intensity)
+if (nargin<2) || isempty(intensity)
 	intensity=10;     % default mean total intensity, 10 volts
 end
 
 a=4*k*T*R/(deltat);             % Johnson-Nyquist noise in volts
 b=elementarycharge*R/(deltat);  % Counting statistics prefactor
 
-els=fieldnames(ISODATA);
-for i=1:length(els)
-	element=els{i};
-	nisos=ISODATA.(element).nisos;
+nisos=ISODATA.(element).nisos;
 
-	% by default assume Johnson noise and counting statistics
-        errormodel.measured.type='fixed-total';
-	errormodel.measured.intensity=intensity;
-	errormodel.measured.a=a.*ones(1,nisos);
-	errormodel.measured.b=b.*ones(1,nisos);
-	errormodel.measured.c=0.*ones(1,nisos);
+% by default assume Johnson noise and counting statistics
+errormodel.measured.type='fixed-total';
+errormodel.measured.intensity=intensity;
+errormodel.measured.a=a.*ones(1,nisos);
+errormodel.measured.b=b.*ones(1,nisos);
+errormodel.measured.c=0.*ones(1,nisos);
 
-	% by default, assume no noise on the spike
-        errormodel.spike.type='fixed-total';
-	errormodel.spike.intensity=intensity;
-	errormodel.spike.a=0.*ones(1,nisos);
-	errormodel.spike.b=0.*ones(1,nisos);
-	errormodel.spike.c=0.*ones(1,nisos);
+% by default, assume no noise on the spike
+errormodel.spike.type='fixed-total';
+errormodel.spike.intensity=intensity;
+errormodel.spike.a=0.*ones(1,nisos);
+errormodel.spike.b=0.*ones(1,nisos);
+errormodel.spike.c=0.*ones(1,nisos);
 
-	% by default, assume no noise on standard unless it is radiogenic
-        errormodel.standard.type='fixed-total';
-	errormodel.standard.intensity=intensity;
-	if isempty(intersect(radiogenicisos,{element}))
-		errormodel.standard.a=0.*ones(1,nisos);
-		errormodel.standard.b=0.*ones(1,nisos);
-	else
-		errormodel.standard.a=a.*ones(1,nisos);
-		errormodel.standard.b=b.*ones(1,nisos);
-	end
-	errormodel.standard.c=0.*ones(1,nisos);
-
-	ISODATA.(element).errormodel=errormodel;
+% by default, assume no noise on standard unless it is radiogenic
+errormodel.standard.type='fixed-total';
+errormodel.standard.intensity=intensity;
+if isempty(intersect(radiogenicisos,{element}))
+	errormodel.standard.a=0.*ones(1,nisos);
+	errormodel.standard.b=0.*ones(1,nisos);
+else
+	errormodel.standard.a=a.*ones(1,nisos);
+	errormodel.standard.b=b.*ones(1,nisos);
 end
+errormodel.standard.c=0.*ones(1,nisos);
+
+ISODATA.(element).errormodel=errormodel;
 

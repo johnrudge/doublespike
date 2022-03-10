@@ -150,10 +150,10 @@ ISODATA.Fe.errormodel.measured
 % for the default error model. In the example below, a doubling of the intensity decreases the error
 % by roughly a factor of 1/sqrt(2).
 error1=errorestimate('Fe',0.5,spike,[],[],-0.2,1.8)
-seterrormodel(20,8); % set a 20 V total beam with 8 second integrations
+seterrormodel('Fe',20,8); % set a 20 V total beam with 8 second integrations
 error2=errorestimate('Fe',0.5,spike,[],[],-0.2,1.8)
 error2/error1
-seterrormodel(); % return error model to defaults
+seterrormodel('Fe'); % return error model to defaults
 
 %% Error model 3
 % The default error model of the double spike toolbox fixes the total voltage of the beams for the overall
@@ -165,7 +165,7 @@ isoinv = [58 60 61 62];
 spike6062 = [0.0132 0.3295 0.0014 0.6547 0.0012];
 spike6162 = [0.0109 0.0081 0.4496 0.5297 0.0017];
 
-seterrormodel()
+seterrormodel('Ni')
 % fix the sample intensity at 0.5 V for all runs
 ISODATA.Ni.errormodel.measured.intensity = 0.5;
 ISODATA.Ni.errormodel.measured.type = 'fixed-sample';
@@ -175,5 +175,5 @@ hold on
 errorcurve('Ni', spike6162, isoinv);
 ylim([0 0.06]);
 legend('^{60}Ni-^{62}Ni spike', '^{61}Ni-^{62}Ni spike')
-seterrormodel(); % return error model to defaults
+seterrormodel('Ni'); % return error model to defaults
 
